@@ -11,6 +11,14 @@
 |
 */
 
-Route::get('/', function () {
-    return view('layout');
+Route::get('/', 'PostController@index')->name('home');
+
+Route::resource('posts', 'PostController');
+Route::post('posts/{post}/comments', 'CommentController@store');
+
+Auth::routes();
+Route::get('/logout', function () {
+    auth()->logout();
+
+    return redirect()->home();
 });
