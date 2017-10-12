@@ -20,6 +20,8 @@
 
 @include('layouts.naw')
 
+@include('layouts.alert')
+
 <div class="blog-header">
     <div class="container">
         <h1 class="blog-title">The Bootstrap Blog</h1>
@@ -40,6 +42,13 @@
 </div><!-- /.container -->
 
 @include('layouts.footer')
+
+<script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+
+@stack('script')
 
 </body>
 </html>

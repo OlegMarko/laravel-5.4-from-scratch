@@ -22,15 +22,15 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        $data['posts'] = Post::latest()
+        $this->data['posts'] = Post::latest()
             ->filter([request('month'), request('year')])
             ->simplePaginate(5);
 
-        return view('posts.index', $data);
+        return view('posts.index', $this->data);
     }
 
     /**
@@ -52,6 +52,8 @@ class PostController extends Controller
     public function store(PostRequest $request)
     {
         $request->publish();
+
+        session()->flash('message', 'Your post is published!');
 
         return redirect()->home();
     }
