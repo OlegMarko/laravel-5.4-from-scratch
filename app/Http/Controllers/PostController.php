@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
 use App\Post;
+use App\Repositories\PostRepository;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     public $data = [];
+    protected $postRepository;
 
-    public function __construct()
+    public function __construct(PostRepository $postRepository)
     {
-        $this->middleware('auth')->except(['index, show']);
+        $this->postRepository = $postRepository;
+
+        $this->middleware('auth')->except('index', 'show');
     }
 
     /**
@@ -47,11 +51,7 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-        auth()->user()->publish(
-            new Post(request([
-                'title', 'body'
-            ]))
-        );
+        $request->publish();
 
         return redirect()->home();
     }
@@ -64,7 +64,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::findOrFail($id);
+        $post = $this->postRepository->find($id);
 
         return view('posts.show', compact('post'));
     }

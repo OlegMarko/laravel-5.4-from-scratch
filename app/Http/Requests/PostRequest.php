@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Post;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PostRequest extends FormRequest
@@ -27,5 +28,17 @@ class PostRequest extends FormRequest
             'title' => 'required|max:255',
             'body' => 'required'
         ];
+    }
+
+    /**
+     * Publish the post
+     */
+    public function publish()
+    {
+        auth()->user()->publish(
+            new Post($this->only([
+                'title', 'body'
+            ]))
+        );
     }
 }

@@ -10,6 +10,11 @@ use App\Post;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function store(CommentRequest $request, Post $post)
     {
         $post->addComment($request->body);

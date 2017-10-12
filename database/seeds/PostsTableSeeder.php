@@ -14,21 +14,15 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(User::class, 5)->create()->each(function($user) {
-            factory(Post::class, mt_rand(1, 5))->create(['user_id' => $user->id,])
-                ->each(function ($post) use ($user) {
+        factory(Post::class, 10)->create()
+            ->each(function ($post) {
 
-                    if ($user->id > 1)
-                        factory(Comment::class)->create([
-                            'user_id' => $user->id - 1,
-                            'post_id' => $post->id
-                        ]);
-
-                    factory(Comment::class)->create([
-                        'user_id' => $user->id,
-                        'post_id' => $post->id
-                    ]);
-                });
-        });
+                factory(Comment::class, mt_rand(1, 3))->create([
+                    'user_id' => function () {
+                        return factory(User::class)->create()->id;
+                    },
+                    'post_id' => $post->id
+                ]);
+            });
     }
 }
